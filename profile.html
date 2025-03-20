@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="profile.css">
+    <title>Profile - Kina Dadi Store</title>
+</head>
+<body>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <div class="profile-card">
+            <div class="profile-img-container">
+                <img id="profileImg" src="images/profile-icon.jpg" alt="Profile Picture" class="profile-img">
+                <input type="file" id="imgUpload" accept="image/*" style="display: none;">
+                <button class="change-btn" onclick="changeProfilePicture()">Change Picture</button>
+            </div>
+            <div class="profile-info">
+                <h2 id="profileName">John Doe</h2>
+                <p id="profileEmail">johndoe@example.com</p>
+                <p id="profileDate">Joined: January 2024</p>
+                <button class="edit-btn" id="editBtn" onclick="toggleEdit()">Edit Profile</button>
+            </div>
+
+            <!-- Edit Form -->
+            <form id="editForm" style="display: none;" onsubmit="saveProfile(); return false;">
+                <input type="text" id="nameInput" placeholder="Enter Name" required>
+                <input type="email" id="emailInput" placeholder="Enter Email" required>
+                <input type="text" id="dateInput" placeholder="Joined Date" required>
+                <button type="submit" class="save-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Purchased Items Section -->
+    <div class="purchase-section">
+        <h2>Purchased Items</h2>
+        <div id="productGrid" class="product-grid">
+            <div class="product-card" data-category="electronics">
+                <img src="product1.jpg" alt="Product 1">
+                <h3>Product Name</h3>
+                <p>Price: $20</p>
+            </div>
+            <div class="product-card" data-category="clothing">
+                <img src="product2.jpg" alt="Product 2">
+                <h3>Product Name</h3>
+                <p>Price: $15</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Items Section -->
+    <div class="cart-section">
+        <h2>Cart Items</h2>
+        <div class="product-grid">
+            <div class="product-card" data-category="accessories">
+                <img src="product3.jpg" alt="Cart Product">
+                <h3>Cart Product</h3>
+                <p>Price: $10</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load JavaScript -->
+    <script src="profile.js"></script>
+</body>
+</html>

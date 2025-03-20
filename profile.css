@@ -1,0 +1,221 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5E6D3;
+    margin: 0;
+    padding: 0;
+    color: #8B3E25;
+}
+
+/* Back to Home Link */
+.back-link {
+    color: #A23E2B;
+    text-decoration: none;
+    margin: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Profile Section */
+.profile-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+/* Profile Card */
+.profile-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 450px;
+}
+
+/* Profile Image Container */
+.profile-img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Profile Picture */
+.profile-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid #E8B557;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Change Picture Button */
+.change-btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.change-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Profile Info */
+.profile-info h2 {
+    color: #8B3E25;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.profile-info p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* Edit Button */
+.edit-btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.edit-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Form Styles */
+#editForm input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #E8B557;
+    border-radius: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.save-btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.save-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Purchased and Cart Sections */
+.purchase-section,
+.cart-section {
+    background-color: #F5E6D3;
+    padding: 20px 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Section Headings */
+.purchase-section h2,
+.cart-section h2 {
+    color: #A23E2B;
+    margin-bottom: 10px;
+}
+
+/* Grid for Purchased and Cart Items */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Filtered Grid */
+.product-grid.filtered {
+    justify-content: center;
+}
+
+/* Product Cards */
+.product-card {
+    background-color: #FFF;
+    border: 1px solid #E8B557;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* Hide Product Card */
+.product-card.hidden {
+    display: none;
+}
+
+/* Hover Effect */
+.product-card:hover {
+    transform: translateY(-5px);
+    border-color: #A23E2B;
+}
+
+/* Product Images */
+.product-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Product Title */
+.product-card h3 {
+    font-size: 16px;
+    color: #8B3E25;
+    margin-top: 10px;
+}
+
+/* Product Price */
+.product-card p {
+    font-size: 14px;
+    color: #A23E2B;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-card {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .back-link {
+        font-size: 14px;
+    }
+}
