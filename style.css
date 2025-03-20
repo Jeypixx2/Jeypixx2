@@ -27,10 +27,10 @@ body {
     margin: 0 auto;
 }
 
-/* Search Bar and Profile */
+/* Search Bar, Profile, and Cart */
 .header-top {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: 10px;
     position: relative;
@@ -52,10 +52,36 @@ body {
     font-size: 16px;
 }
 
+/* Cart Icon */
+.cart-icon {
+    position: relative;
+    margin-right: 15px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Cart Icon Image */
+.cart-icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #E8B557; /* Gold */
+}
+
+/* Cart Count Badge */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #E84C3D;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+}
+
 /* Profile Icon */
 .profile-icon {
-    position: absolute;
-    right: 0;
     margin-right: 10px;
 }
 
@@ -168,4 +194,25 @@ h2 {
 /* Hide filtered-out cards */
 .product-card.hidden {
     display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .cart-icon,
+    .profile-icon {
+        margin-top: 10px;
+    }
 }

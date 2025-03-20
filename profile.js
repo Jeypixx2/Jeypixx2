@@ -3,6 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProfile();
 });
 
+// Cart Array to Store Items
+let cart = [];
+
+// Add to Cart Function
+function addToCart(productName, price) {
+    const product = { name: productName, price: price };
+    cart.push(product);
+
+    // Update Cart Count
+    document.getElementById('cartCount').innerText = cart.length;
+    alert(`${productName} has been added to your cart!`);
+}
 // Toggle Edit Mode
 function toggleEdit() {
     const editForm = document.getElementById('editForm');
