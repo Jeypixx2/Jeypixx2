@@ -1,74 +1,130 @@
-// Load saved profile data from localStorage
-document.addEventListener('DOMContentLoaded', () => {
-    loadProfile();
+// Import Firebase modules
+import { auth, database } from "./firebase-config.mjs";
+import {
+    onAuthStateChanged,
+    signOut,
+    updateEmail,
+} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+import {
+    ref,
+    get,
+    update,
+} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+
+
+window.changeProfilePicture = changeProfilePicture;
+window.toggleEdit = toggleEdit;
+window.logoutUser = logoutUser;
+
+
+// ✅ Check if user is logged in and load profile data
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const userId = user.uid;
+        console.log("User authenticated with UID:", userId);
+        loadProfileFromFirebase(userId); // ✅ Load profile
+        loadProfile(); // ✅ Load profile picture
+    } else {
+        window.location.href = "login.html"; // Redirect to login if not authenticated
+    }
 });
 
-// Cart Array to Store Items
-let cart = [];
+// ✅ Load user profile from Firebase
+function loadProfileFromFirebase(userId) {
+    showLoading(true); // Show loading spinner
 
-// Add to Cart Function
-function addToCart(productName, price) {
-    const product = { name: productName, price: price };
-    cart.push(product);
+    const userRef = ref(database, "users/" + userId);
+    get(userRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
 
-    // Update Cart Count
-    document.getElementById('cartCount').innerText = cart.length;
-    alert(`${productName} has been added to your cart!`);
+                console.log("Loaded data:", data);
+
+                // ✅ Display profile info
+                document.getElementById("profileName").innerText = data.name || "Unknown";
+                document.getElementById("profileEmail").innerText = data.email || "Unknown";
+                document.getElementById("profileDate").innerText = `Joined: ${data.joined || "N/A"}`;
+                document.getElementById("profileLocation").innerText = `Location: ${data.location || "Not set"}`;
+                document.getElementById("profilePhone").innerText = `Phone: ${data.number || "Not provided"}`;
+
+                // ✅ Set values in the edit form
+                document.getElementById("nameInput").value = data.name || "";
+                document.getElementById("emailInput").value = data.email || "";
+                document.getElementById("phoneInput").value = data.number || "";
+                document.getElementById("dateInput").value = data.joined || "";
+            } else {
+                console.log("No data available for this user.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading data:", error);
+        })
+        .finally(() => {
+            showLoading(false); // Hide loading spinner
+        });
 }
-// Toggle Edit Mode
-function toggleEdit() {
-    const editForm = document.getElementById('editForm');
-    const editBtn = document.getElementById('editBtn');
 
-    if (editForm.style.display === 'none' || editForm.style.display === '') {
-        editForm.style.display = 'block';
-        editBtn.innerText = 'Cancel';
-    } else {
-        editForm.style.display = 'none';
-        editBtn.innerText = 'Edit Profile';
+// ✅ Save Profile Changes
+async function saveProfile() {
+    const nameInput = document.getElementById("nameInput").value;
+    const emailInput = document.getElementById("emailInput").value;
+    const phoneInput = document.getElementById("phoneInput").value;
+    const dateInput = document.getElementById("dateInput").value;
+    const user = auth.currentUser;
+
+    if (user) {
+        const userId = user.uid;
+        const userRef = ref(database, "users/" + userId);
+
+        try {
+            // ✅ Update name, phone, and joined date
+            await update(userRef, {
+                name: nameInput,
+                number: phoneInput,
+                joined: dateInput,
+            });
+            showNotification("Profile updated successfully!", "success");
+
+            // ✅ Check if email is different before updating
+            if (emailInput !== user.email) {
+                await updateEmail(user, emailInput);
+                await update(userRef, { email: emailInput });
+                showNotification("Email updated successfully!", "success");
+            }
+
+            // ✅ Reload profile after updating
+            loadProfileFromFirebase(userId);
+            toggleEdit();
+        } catch (error) {
+            showNotification("Error updating profile: " + error.message, "error");
+        }
     }
 }
 
-// Save Profile Data
-function saveProfile() {
-    const nameInput = document.getElementById('nameInput').value;
-    const emailInput = document.getElementById('emailInput').value;
-    const dateInput = document.getElementById('dateInput').value;
+// ✅ Toggle Edit Form
+function toggleEdit() {
+    const editForm = document.getElementById("editForm");
+    const editBtn = document.getElementById("editBtn");
 
-    // Save to localStorage
-    localStorage.setItem('profileName', nameInput);
-    localStorage.setItem('profileEmail', emailInput);
-    localStorage.setItem('profileDate', dateInput);
-
-    // Update displayed data
-    document.getElementById('profileName').innerText = nameInput;
-    document.getElementById('profileEmail').innerText = emailInput;
-    document.getElementById('profileDate').innerText = dateInput;
-
-    // Hide edit form after saving
-    toggleEdit();
+    if (editForm.style.display === "none" || editForm.style.display === "") {
+        editForm.style.display = "block";
+        editBtn.innerText = "Cancel";
+    } else {
+        editForm.style.display = "none";
+        editBtn.innerText = "Edit Profile";
+    }
 }
 
-// Load Profile Data
+// ✅ Load Profile Picture from Local Storage
 function loadProfile() {
-    const name = localStorage.getItem('profileName') || 'John Doe';
-    const email = localStorage.getItem('profileEmail') || 'johndoe@example.com';
-    const date = localStorage.getItem('profileDate') || 'January 2024';
-    const imgSrc = localStorage.getItem('profileImg') || 'images/profile-icon.jpg';
-
-    document.getElementById('profileName').innerText = name;
-    document.getElementById('profileEmail').innerText = email;
-    document.getElementById('profileDate').innerText = date;
-    document.getElementById('profileImg').src = imgSrc;
-
-    document.getElementById('nameInput').value = name;
-    document.getElementById('emailInput').value = email;
-    document.getElementById('dateInput').value = date;
+    const imgSrc = localStorage.getItem("profileImg") || "images/profile-icon.jpg";
+    document.getElementById("profileImg").src = imgSrc;
 }
 
-// Change Profile Picture
+// ✅ Change Profile Picture
 function changeProfilePicture() {
-    const imgUpload = document.getElementById('imgUpload');
+    const imgUpload = document.getElementById("imgUpload");
     imgUpload.click();
 
     imgUpload.onchange = function () {
@@ -77,10 +133,49 @@ function changeProfilePicture() {
             const reader = new FileReader();
             reader.onload = function (e) {
                 const newImgSrc = e.target.result;
-                document.getElementById('profileImg').src = newImgSrc;
-                localStorage.setItem('profileImg', newImgSrc);
+                document.getElementById("profileImg").src = newImgSrc;
+                localStorage.setItem("profileImg", newImgSrc); // ✅ Save image to localStorage
             };
             reader.readAsDataURL(file);
         }
     };
 }
+
+// ✅ Show Loading Spinner
+function showLoading(show) {
+    document.getElementById("loading").style.display = show ? "block" : "none";
+}
+
+// ✅ Show Notification
+function showNotification(message, type) {
+    const notification = document.getElementById("notification");
+    notification.innerText = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = "block";
+
+    setTimeout(() => {
+        notification.style.display = "none";
+    }, 3000);
+}
+
+function logoutUser() {
+    signOut(auth)
+        .then(() => {
+            showNotification("Logout successful!", "success");
+            window.location.href = "login.html"; // ✅ Redirect to login page
+        })
+        .catch((error) => {
+            showNotification("Logout failed: " + error.message, "error");
+        });
+}
+
+document.getElementById("logoutButton")?.addEventListener("click", () => {
+    signOut(auth)
+        .then(() => {
+            showNotification("Logout successful!", "success");
+            window.location.href = "login.html"; // ✅ Redirect to login page
+        })
+        .catch((error) => {
+            showNotification("Logout failed: " + error.message, "error");
+        });
+});

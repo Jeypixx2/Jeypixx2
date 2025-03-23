@@ -80,8 +80,22 @@ function updateCartCount() {
     document.getElementById('cartCount').innerText = totalItems;
 }
 
+// Clear All Items from Cart
+function clearCart() {
+    localStorage.removeItem('cart');
+    loadCartItems();
+    updateCartCount();
+    alert('Cart has been cleared!');
+}
+
 // Proceed to Checkout (Demo)
 function checkout() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('Your cart is empty. Please add some items.');
+        return;
+    }
+
     alert('Proceeding to checkout...');
     localStorage.removeItem('cart');
     window.location.href = 'index.html';

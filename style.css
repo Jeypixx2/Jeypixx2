@@ -68,16 +68,17 @@ body {
     border: 2px solid #E8B557; /* Gold */
 }
 
-/* Cart Count Badge */
 .cart-count {
     position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #E84C3D;
+    top: 0; /* Adjusted to align properly */
+    right: 0; /* Slightly moved inside the circle */
+    background-color: #E84C3D; /* Red */
     color: white;
     border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 12px;
+    padding: 2px 5px; /* Smaller padding */
+    font-size: 10px; /* Reduced font size */
+    border: 1px solid #F5E6D3; /* Optional: Add border for better visibility */
+    transform: translate(50%, -50%); /* Center it properly */
 }
 
 /* Profile Icon */
@@ -214,5 +215,51 @@ h2 {
     .cart-icon,
     .profile-icon {
         margin-top: 10px;
+    }
+}
+/* Notification Style */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    z-index: 1000;
+    display: none;
+}
+
+/* Success Message */
+.notification.success {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+/* Error Message */
+.notification.error {
+    background-color: #F44336;
+    color: #fff;
+}
+
+/* Show Animation */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
     }
 }
