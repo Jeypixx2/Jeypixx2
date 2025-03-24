@@ -1,9 +1,8 @@
-/// firebase-config.mjs
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-// Your Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyC1tTi3cGh3CcFx3TiVWzmYNBTOoRhPkzw",
     authDomain: "kina-dadi.firebaseapp.com",
@@ -15,7 +14,6 @@ const firebaseConfig = {
     measurementId: "G-K415T91SBQ"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);

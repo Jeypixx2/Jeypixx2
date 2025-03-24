@@ -166,3 +166,35 @@ a:hover {
         transform: translateY(-10px);
     }
 }
+/* User Type Dropdown */
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #8B3E25;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #F5E6D3;
+    color: #8B3E25;
+}
+
+/* Extra Fields Container */
+#extraFields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Fix for Location and Number Inputs */
+#extraFields input {
+    width: calc(100% - 20px); /* Same width as other inputs */
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #E8B557;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #FDF7EF;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(232, 181, 87, 0.2);
+}

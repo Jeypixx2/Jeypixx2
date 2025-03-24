@@ -1,18 +1,37 @@
-/* General Styles */
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #F5E6D3; /* Light Beige */
-    margin: 0;
+    background-color: #F5E6D3;
     padding: 0;
-    color: #8B3E25; /* Dark Brown */
+    color: #8B3E25;
 }
 
-/* Header Section */
+/* Ensure body and html cover full width */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Update header to cover entire width */
 .header {
-    background-color: #A23E2B; /* Burgundy/Red */
+    background-color: #A23E2B;
+    width: 100vw; /* Force full width */
     padding: 20px 0;
     text-align: center;
+    margin: 0;
+    box-sizing: border-box;
 }
+
+/* Fix container width */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
 
 /* Store Title */
 .store-title {
@@ -21,28 +40,28 @@ body {
     margin: 0;
 }
 
-/* Container */
-.container {
-    width: 90%;
-    margin: 0 auto;
-}
 
-/* Header Top - Search, Cart, Profile */
+/* Header Top: Aligned and Full Width */
 .header-top {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: 10px;
-    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto 0;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-/* Search Bar */
+/* Search Bar: Centered */
 .search-bar {
     flex: 1;
     display: flex;
     justify-content: center;
 }
 
+/* Search Bar Input */
 .search-bar input {
     padding: 12px;
     width: 100%;
@@ -61,10 +80,11 @@ body {
     position: relative;
 }
 
+/* Cart Icon Image */
 .cart-icon img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 25%;
 }
 
 /* Cart Count Badge */
@@ -81,8 +101,6 @@ body {
 
 /* Profile Icon */
 .profile-icon {
-    position: absolute;
-    right: 0;
     margin-right: 10px;
 }
 
@@ -92,6 +110,25 @@ body {
     border-radius: 50%;
     border: 2px solid #E8B557; /* Gold */
 }
+
+/* Responsive Design for Header */
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .cart-icon,
+    .profile-icon {
+        margin-top: 10px;
+    }
+}
+
 
 /* Cart Section */
 .cart-section {

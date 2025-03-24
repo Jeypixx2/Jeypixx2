@@ -10,20 +10,49 @@
 
     <div class="container">
         <h2>Create an Account</h2>
+
+        <select id="userType" onchange="toggleFields()">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+
+
         <form id="registerForm">
             <input type="text" id="name" placeholder="Enter Your Name" required>
             <input type="email" id="email" placeholder="Enter Email" required>
             <input type="password" id="password" placeholder="Enter Password" required>
-            <input type="text" id="location" placeholder="Enter Your Location" required>
-            <input type="text" id="number" placeholder="Enter Phone Number" required>
+
+            <div id="extraFields">
+                <input type="text" id="location" placeholder="Enter Your Location" required>
+                <input type="text" id="number" placeholder="Enter Phone Number" required>
+            </div>
+
             <button type="submit">Register</button>
         </form>
 
         <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
 
-    <!-- ✅ Notification Div -->
     <div id="notification" class="notification"></div>
+
+    <script>
+        function toggleFields() {
+            const userType = document.getElementById('userType').value;
+            const extraFields = document.getElementById('extraFields');
+
+            if (userType === 'admin') {
+                extraFields.style.display = 'none';
+                document.getElementById('location').removeAttribute('required');
+                document.getElementById('number').removeAttribute('required');
+            } else {
+                extraFields.style.display = 'block';
+                document.getElementById('location').setAttribute('required', 'true');
+                document.getElementById('number').setAttribute('required', 'true');
+            }
+        }
+
+        window.onload = toggleFields;
+    </script>
 
     <script type="module" src="firebase-config.mjs"></script>
     <script type="module" src="auth.mjs"></script>

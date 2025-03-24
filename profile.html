@@ -28,7 +28,10 @@
                 <button class="edit-btn" id="editBtn" onclick="toggleEdit()">Edit Profile</button>
             </div>
 
-            <!-- ✅ Edit Form -->
+            <div class="logout-section" style="text-align: center; margin-top: 20px;">
+                <button id="logoutButton" class="logout-btn">Logout</button>
+            </div>
+
             <form id="editForm" style="display: none;" onsubmit="saveProfile(); return false;">
                 <input type="text" id="nameInput" placeholder="Enter Name" required>
                 <input type="email" id="emailInput" placeholder="Enter Email" required>
@@ -39,19 +42,14 @@
         </div>
     </div>
 
-    <!-- ✅ Purchased Items Section -->
     <div class="purchase-section">
         <h2>Purchased Items</h2>
         <div id="productGrid" class="product-grid">
-            <!-- Purchased items dynamically populated here -->
         </div>
     </div>
 
-    <div class="logout-section" style="text-align: center; margin-top: 20px;">
-        <button id="logoutButton" class="logout-btn">Logout</button>
-    </div>
+   
 
-    <!-- ✅ Notification and Loading -->
     <div id="notification" class="notification" style="display: none;"></div>
     <div id="loading" style="display: none;">Loading...</div>
 

@@ -10,24 +10,21 @@
 
 <body>
 
-    <!-- Header Section -->
     <header class="header">
         <div class="container">
             <h1 class="store-title">Kina Dadi Store</h1>
 
             <div class="header-top">
-                <!-- Cart Icon -->
                 <a href="cart.html" class="cart-icon">
                     <img src="images/cart.ico" alt="Cart">
                     <span id="cartCount" class="cart-count">0</span>
                 </a>
 
-                <!-- Search Bar -->
                 <div class="search-bar">
                     <input type="text" id="searchInput" placeholder="Search for products...">
                 </div>
 
-                <!-- Profile Icon -->
+
                 <a href="profile.html" class="profile-icon">
                     <img src="images/profile-icon.jpg" alt="Profile">
                 </a>
@@ -35,7 +32,7 @@
         </div>
     </header>
 
-    <!-- Filter Section -->
+
     <section class="filter-section">
         <div class="container">
             <button class="filter-btn" data-category="all">All</button>
@@ -47,13 +44,11 @@
         </div>
     </section>
 
-    <!-- Product Section -->
     <section class="products">
         <div class="container">
             <h2>Our Products</h2>
             <div id="productGrid" class="product-grid">
 
-                <!-- Product 1 -->
                 <div class="product-card" data-category="foods">
                     <img src="images/placeholder.jpg" alt="Product 1">
                     <h3>Product 1</h3>
@@ -67,7 +62,6 @@
                         onclick="return false;">Add to Cart</a>
                 </div>
 
-                <!-- Product 2 -->
                 <div class="product-card" data-category="beverages">
                     <img src="images/placeholder.jpg" alt="Product 2">
                     <h3>Product 2</h3>
@@ -81,7 +75,6 @@
                         onclick="return false;">Add to Cart</a>
                 </div>
 
-                <!-- Product 3 -->
                 <div class="product-card" data-category="household">
                     <img src="images/placeholder.jpg" alt="Product 3">
                     <h3>Product 3</h3>
@@ -95,7 +88,6 @@
                         onclick="return false;">Add to Cart</a>
                 </div>
 
-                <!-- Product 4 -->
                 <div class="product-card" data-category="toiletries">
                     <img src="images/placeholder.jpg" alt="Product 4">
                     <h3>Product 4</h3>
@@ -109,7 +101,6 @@
                         onclick="return false;">Add to Cart</a>
                 </div>
 
-                <!-- Product 5 -->
                 <div class="product-card" data-category="school">
                     <img src="images/placeholder.jpg" alt="Product 5">
                     <h3>Product 5</h3>
@@ -143,10 +134,8 @@
     <script type="module">
         import { auth } from "./firebase-config.mjs";
     
-        // Check user authentication state
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                // If no user is logged in, redirect to login page
                 window.location.href = "login.html";
             } else {
                 console.log("User is logged in:", user.email);

@@ -7,9 +7,8 @@ body {
     color: #8B3E25; /* Dark Brown */
 }
 
-/* Header Section */
 .header {
-    background-color: #A23E2B; /* Burgundy/Red */
+    background-color: #A23E2B;
     padding: 20px 0;
     text-align: center;
 }
@@ -54,18 +53,17 @@ body {
 
 /* Cart Icon */
 .cart-icon {
-    position: relative;
-    margin-right: 15px;
-    cursor: pointer;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
     text-decoration: none;
+    position: relative;
 }
 
-/* Cart Icon Image */
 .cart-icon img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    border: 2px solid #E8B557; /* Gold */
+    border-radius: 25%;
 }
 
 .cart-count {
@@ -159,18 +157,15 @@ h2 {
     border-radius: 10px;
 }
 
-/* Product Title */
 .product-card h3 {
     margin: 10px 0;
     color: #8B3E25;
 }
 
-/* Product Price */
 .product-card p {
     color: #A23E2B;
 }
 
-/* Add to Cart Button */
 .btn {
     background-color: #E8B557;
     color: #8B3E25;

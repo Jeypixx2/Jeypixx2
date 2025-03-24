@@ -5,7 +5,7 @@ import {
     onAuthStateChanged,
     signOut,
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-import { ref, set } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+import { ref, set, get } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
 // Show loading indicator (optional: add a <div id="loading">Loading...</div> in your HTML)
 function showLoading(show) {
@@ -42,33 +42,49 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
     const password = document.getElementById('password').value;
     const location = document.getElementById('location').value;
     const number = document.getElementById('number').value;
+    const userType = document.getElementById('userType').value; // ✅ Get selected user type
+
+    // ✅ Check if userType is valid
+    if (!userType) {
+        showNotification('Please select a user type!', 'error');
+        return;
+    }
 
     try {
-        // ✅ Create user in Firebase Auth
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // ✅ Save user info in Firebase Database
-        await set(ref(database, 'users/' + user.uid), {
-            name: name,
-            email: email,
-            location: location,
-            number: number,
-            joined: new Date().toLocaleDateString(),
-        });
+        const userData = userType === "admin"
+            ? {
+                  name: name,
+                  email: email,
+              }
+            : {
+                  name: name,
+                  email: email,
+                  location: location,
+                  number: number,
+                  joined: new Date().toLocaleDateString(),
+              };
+
+        // ✅ Save data to the correct node
+        const userNode = userType === "admin" ? "admins/" : "users/";
+
+        await set(ref(database, userNode + user.uid), userData);
 
         showNotification('Account created successfully!', 'success');
         setTimeout(() => {
-            window.location.href = 'profile.html'; // ✅ Redirect to profile
+            // ✅ Redirect admin to admin.html and user to profile.html
+            const redirectPage = userType === "admin" ? "admin.html" : "profile.html";
+            window.location.href = redirectPage;
         }, 1500);
-
     } catch (error) {
         showNotification(error.message, 'error');
     }
 });
 
 // ✅ Check Auth State and Handle Redirects
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     const currentPage = window.location.pathname.split("/").pop();
 
     // ✅ Prevent redirection during registration
@@ -81,14 +97,18 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-    // ✅ Automatically redirect logged-in user
     if (user) {
+        // ✅ Check if the logged-in user is admin or regular user
+        const adminRef = ref(database, 'admins/' + user.uid);
+        const adminSnapshot = await get(adminRef);
+
+        // ✅ Redirect to the correct page
         if (currentPage === "login.html" || currentPage === "register.html") {
-            window.location.href = "index.html";
+            const redirectPage = adminSnapshot.exists() ? "admin.html" : "profile.html";
+            window.location.href = redirectPage;
         }
     }
 
-    // ✅ Log user info
     if (user) {
         console.log("User logged in:", user.uid);
     } else {
@@ -97,27 +117,33 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // ✅ User Login
-document.getElementById('loginForm')?.addEventListener('submit', function (e) {
+document.getElementById('loginForm')?.addEventListener('submit', async function (e) {
     e.preventDefault();
-
     showLoading(true);
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            showNotification('Login successful! Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-        })
-        .catch((error) => {
-            showNotification('Login failed: ' + error.message, 'error');
-        })
-        .finally(() => {
-            showLoading(false);
-        });
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Check if the logged-in user is admin or regular user
+        const adminRef = ref(database, 'admins/' + user.uid);
+        const adminSnapshot = await get(adminRef);
+
+        const redirectPage = adminSnapshot.exists() ? "admin.html" : "profile.html";
+
+        showNotification('Login successful! Redirecting...', 'success');
+        setTimeout(() => {
+            window.location.href = redirectPage;
+        }, 1500);
+
+    } catch (error) {
+        showNotification('Login failed: ' + error.message, 'error');
+    } finally {
+        showLoading(false);
+    }
 });
 
 // ✅ Log Out Function

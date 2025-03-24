@@ -21,7 +21,6 @@ body {
     text-decoration: underline;
 }
 
-/* Profile Section */
 .profile-section {
     display: flex;
     justify-content: center;
@@ -29,7 +28,6 @@ body {
     margin-top: 40px;
 }
 
-/* Profile Card */
 .profile-card {
     background-color: #fff;
     padding: 40px;
@@ -39,7 +37,6 @@ body {
     width: 450px;
 }
 
-/* Profile Image Container */
 .profile-img-container {
     display: flex;
     flex-direction: column;
@@ -47,7 +44,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* Profile Picture */
 .profile-img {
     width: 140px;
     height: 140px;
@@ -73,7 +69,6 @@ body {
     color: #F5E6D3;
 }
 
-/* Profile Info */
 .profile-info h2 {
     color: #8B3E25;
     margin-top: 10px;
@@ -81,7 +76,7 @@ body {
 }
 
 .profile-info p {
-    font-size: 14px;
+    font-size: 16px;
     margin: 5px 0;
 }
 
@@ -108,7 +103,7 @@ body {
     margin-bottom: 10px;
     border: 1px solid #E8B557;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -239,4 +234,27 @@ body {
 .notification.error {
     background-color: #F44336;
     color: white;
+}
+
+/* Logout Button */
+.logout-btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Center Logout Button */
+.logout-section {
+    margin-top: 10px;
+    text-align: center;
 }
