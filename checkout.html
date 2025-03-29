@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Kina Dadi Store</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1 class="store-title">Kina Dadi Store</h1>
+            <a href="index.html" class="btn back-btn">Back to Shop</a>
+        </div>
+    </header>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <h2>Order Summary</h2>
+
+            <!-- Order Summary Details -->
+            <div class="order-summary">
+                <p><strong>Total Amount:</strong> ₱<span id="orderTotal"></span></p>
+                <p><strong>Delivery Option:</strong> <span id="orderDeliveryOption"></span></p>
+                <p><strong>Delivery Location:</strong> <span id="orderLocation"></span></p>
+                <p><strong>Delivery Fee:</strong> ₱<span id="orderDeliveryFee"></span></p>
+            </div>
+
+            <!-- User Details (Auto-Filled) -->
+            <h3>Your Details</h3>
+            <div class="user-details">
+                <p><strong>Full Name:</strong> <span id="fullName"></span></p>
+                <p><strong>Email Address:</strong> <span id="email"></span></p>
+                <p><strong>Phone Number:</strong> <span id="phone"></span></p>
+            </div>
+
+            <!-- Confirm Order Button -->
+            <button class="btn confirm-btn" id="confirmOrderBtn">Confirm Order</button>
+        </div>
+    </section>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message" style="display: none;">
+        <h2>🎉 Order Placed Successfully!</h2>
+        <p>Thank you for shopping with Kina Dadi Store!</p>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+
+    <!-- Firebase SDK and JS -->
+    <script type="module" src="checkout.js"></script>
+
+</body>
+
+</html>

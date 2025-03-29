@@ -198,3 +198,14 @@ select {
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(232, 181, 87, 0.2);
 }
+.logo-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 120px; /* Adjust size if needed */
+    height: auto;
+    border-radius: 50%; /* Optional for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

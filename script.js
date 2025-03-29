@@ -20,114 +20,113 @@ function showNotification(message, type = "success") {
         notification.className = `notification ${type}`;
         notification.style.display = "block";
 
-        // Hide after 3 seconds
+        // Hide notification after 3 seconds
         setTimeout(() => {
             notification.style.display = "none";
         }, 3000);
     }
 }
 
-// ✅ Register Form Submission
-document.getElementById('registerForm')?.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            // Save user data to database
-            set(ref(database, 'users/' + user.uid), {
-                name: name,
-                email: email,
-                joined: new Date().toLocaleDateString(),
-                location: 'Unknown', // Default value
-            });
-
-            showNotification('Account created successfully! Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'profile.html';
-            }, 1500);
-        })
-        .catch((error) => {
-            showNotification(error.message, 'error');
-        });
+// ✅ Attach Events on Page Load
+document.addEventListener("DOMContentLoaded", () => {
+    updateCartCount(); // Initial cart count
+    attachAllEvents(); // Attach all button events
 });
 
-// ✅ Login Form Submission
-document.getElementById('loginForm')?.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            showNotification('Login successful! Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'profile.html';
-            }, 1500);
-        })
-        .catch((error) => {
-            showNotification('Login failed: ' + error.message, 'error');
-        });
-});
-
-// ✅ Logout Function
-function logout() {
-    signOut(auth)
-        .then(() => {
-            showNotification('Logout successful! Redirecting...', 'success');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1500);
-        })
-        .catch((error) => {
-            showNotification('Error during logout: ' + error.message, 'error');
-        });
+// ✅ Attach Events to Buttons
+function attachAllEvents() {
+    attachAddToCartEvents();
+    attachQtyButtonEvents();
+    attachFilterEvents();
 }
 
-// ✅ Load Cart Count on Page Load
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartCount();
-    attachAddToCartEvents(); // Attach event listeners after DOM load
-});
-
-// ✅ Attach Click Event to Add-to-Cart Buttons
+// ✅ Attach Events to Add-to-Cart Buttons
 function attachAddToCartEvents() {
-    document.querySelectorAll('.btn.add-to-cart').forEach((button) => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
-            const qtyId = button.getAttribute('data-qty');
-            addToCart(name, price, qtyId);
-        });
+    document.querySelectorAll(".btn.add-to-cart").forEach((button) => {
+        button.removeEventListener("click", handleAddToCart);
+        button.addEventListener("click", handleAddToCart);
     });
 }
 
-// ✅ Add Product to Cart
-function addToCart(name, price, qtyId) {
-    const quantity = parseInt(document.getElementById(qtyId).value);
+// ✅ Attach Events to Quantity Buttons (+ and -)
+function attachQtyButtonEvents() {
+    document.querySelectorAll(".qty-btn.plus").forEach((button) => {
+        button.removeEventListener("click", handleIncrease);
+        button.addEventListener("click", handleIncrease);
+    });
+
+    document.querySelectorAll(".qty-btn.minus").forEach((button) => {
+        button.removeEventListener("click", handleDecrease);
+        button.addEventListener("click", handleDecrease);
+    });
+}
+
+// ✅ Attach Events for Category Filter and Search
+function attachFilterEvents() {
+    document.getElementById("searchInput").addEventListener("keyup", filterProducts);
+
+    document.querySelectorAll(".filter-btn").forEach((button) => {
+        button.removeEventListener("click", handleFilterCategory);
+        button.addEventListener("click", handleFilterCategory);
+    });
+}
+
+// ✅ Add to Cart Handler
+function handleAddToCart(e) {
+    e.preventDefault();
+    const button = e.target;
+    addToCart(button);
+}
+
+// ✅ Increase Quantity Handler
+function handleIncrease(e) {
+    const button = e.target;
+    const quantitySpan = button.parentElement.querySelector(".quantity");
+    let quantity = parseInt(quantitySpan.innerText);
+    quantity++;
+    quantitySpan.innerText = quantity;
+}
+
+// ✅ Decrease Quantity Handler
+function handleDecrease(e) {
+    const button = e.target;
+    const quantitySpan = button.parentElement.querySelector(".quantity");
+    let quantity = parseInt(quantitySpan.innerText);
+    if (quantity > 1) {
+        quantity--;
+        quantitySpan.innerText = quantity;
+    }
+}
+
+// ✅ Filter Category Handler
+function handleFilterCategory(e) {
+    const category = e.target.getAttribute("data-category");
+    filterCategory(category);
+}
+
+// ✅ Add to Cart Function
+function addToCart(button) {
+    const productCard = button.closest(".product-card");
+    const name = button.getAttribute("data-name");
+    const price = parseFloat(button.getAttribute("data-price"));
+    const quantitySpan = productCard.querySelector(".quantity");
+    const quantity = parseInt(quantitySpan.innerText);
 
     if (quantity > 0) {
-        // Get product card dynamically
-        const productCard = document.querySelector(`[data-name="${name}"]`).closest('.product-card');
-        const imageSrc = productCard.querySelector('img').src;
+        // Get product image if available
+        const imageSrc = productCard.querySelector("img")?.src || "";
 
         // Create cart item object
         const cartItem = {
             name: name,
             price: price,
             quantity: quantity,
-            image: imageSrc, // Add image to cart
+            image: imageSrc,
         };
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Check if the product is already in the cart and update quantity
+        // Check if product already exists in the cart and update quantity
         const existingItem = cart.find((item) => item.name === name);
         if (existingItem) {
             existingItem.quantity += quantity;
@@ -135,48 +134,49 @@ function addToCart(name, price, qtyId) {
             cart.push(cartItem);
         }
 
-        localStorage.setItem('cart', JSON.stringify(cart));
-
-        showNotification(`${name} added to cart!`, 'success');
-        updateCartCount();
+        localStorage.setItem("cart", JSON.stringify(cart));
+        showNotification(`${name} added to cart!`, "success");
+        updateCartCount(); // ✅ Update cart count correctly
     } else {
-        showNotification('Please enter a valid quantity.', 'error');
+        showNotification("Please select a valid quantity.", "error");
     }
 }
 
 // ✅ Update Cart Count on the Cart Icon
 function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-    document.getElementById('cartCount').innerText = cartCount;
+    document.getElementById("cartCount").innerText = cartCount;
 }
 
-// ✅ Search by Name
+// ✅ Search by Name (Filter Products)
 function filterProducts() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const productCards = document.querySelectorAll('.product-card');
+    const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
+    const productCards = document.querySelectorAll(".product-card");
 
     productCards.forEach((card) => {
-        const productName = card.querySelector('h3').innerText.toLowerCase();
+        const productName = card.querySelector("h3").innerText.toLowerCase();
 
+        // Show or hide based on search input match
         if (productName.includes(searchInput)) {
-            card.style.display = 'block';
+            card.style.display = "block";
         } else {
-            card.style.display = 'none';
+            card.style.display = "none";
         }
     });
 }
 
-// ✅ Filter by Category
+// ✅ Filter by Category (Resets Search Bar)
 function filterCategory(category) {
-    const productCards = document.querySelectorAll('.product-card');
+    document.getElementById("searchInput").value = ""; // Clear search input
+    const productCards = document.querySelectorAll(".product-card");
 
     productCards.forEach((card) => {
-        const cardCategory = card.getAttribute('data-category');
-        if (category === 'all' || category === cardCategory) {
-            card.style.display = 'block';
+        const cardCategory = card.getAttribute("data-category");
+        if (category === "all" || category === cardCategory) {
+            card.style.display = "block";
         } else {
-            card.style.display = 'none';
+            card.style.display = "none";
         }
     });
 }

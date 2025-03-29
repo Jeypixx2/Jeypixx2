@@ -1,3 +1,4 @@
+console.log("admin.js loaded!");
 import { auth, database } from "./firebase-config.mjs";
 import {
     onAuthStateChanged,
@@ -109,8 +110,21 @@ function showNotification(message, type = "success") {
 }
 
 // ✅ Logout Button
-document.getElementById('logoutButton').addEventListener('click', () => {
-    signOut(auth).then(() => {
-        window.location.href = "login.html";
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            signOut(auth)
+                .then(() => {
+                    window.location.href = "login.html"; // Redirect after logout
+                })
+                .catch((error) => {
+                    console.error("Error during logout:", error);
+                    alert("Failed to log out. Please try again.");
+                });
+        });
+    } else {
+        console.error("Logout button not found!");
+    }
 });
+

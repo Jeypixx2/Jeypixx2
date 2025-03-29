@@ -50,6 +50,59 @@ function updateCartTotal() {
 
     document.getElementById('cartTotal').innerText = `$${total.toFixed(2)}`;
 }
+// Delivery Fee Settings
+const deliveryRates = {
+    'Naga City': 30,
+    'Pili': 50,
+    'Iriga': 70,
+    'Others': 100
+};
+
+// ✅ Toggle Location Field for Pickup/Delivery
+function toggleLocation(show) {
+    const locationSection = document.getElementById('locationSection');
+    locationSection.style.display = show ? 'block' : 'none';
+    updateDeliveryFee(); // Update fee when switching
+}
+
+// ✅ Calculate Delivery Fee Based on Location
+function updateDeliveryFee() {
+    const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+    const location = document.getElementById('location').value.trim();
+
+    let deliveryFee = 0;
+
+    if (deliveryOption === 'delivery' && location) {
+        // Check if the location is in the list
+        deliveryFee = deliveryRates[location] || deliveryRates['Others'];
+    }
+
+    // Update Fee Display
+    document.getElementById('deliveryFee').innerText = `Delivery Fee: ₱${deliveryFee.toFixed(2)}`;
+    return deliveryFee;
+}
+
+// ✅ Listen for Changes in Delivery Option
+document.querySelectorAll('input[name="deliveryOption"]').forEach(option => {
+    option.addEventListener('change', updateDeliveryFee);
+});
+
+// ✅ Calculate Fee When Typing Location
+document.getElementById('location').addEventListener('input', updateDeliveryFee);
+
+// ✅ Get Delivery Data to Include in Order
+function getDeliveryData() {
+    const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+    const location = deliveryOption === 'delivery' ? document.getElementById('location').value : 'Store Pickup';
+    const deliveryFee = updateDeliveryFee();
+
+    return {
+        deliveryOption,
+        location,
+        deliveryFee
+    };
+}
+
 
 // Update Quantity of Items in Cart
 function updateQuantity(index, quantity) {
@@ -88,7 +141,7 @@ function clearCart() {
     alert('Cart has been cleared!');
 }
 
-// Proceed to Checkout (Demo)
+// Proceed to Checkout
 function checkout() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     if (cart.length === 0) {
@@ -96,7 +149,27 @@ function checkout() {
         return;
     }
 
+    // Get Delivery Data
+    const deliveryData = getDeliveryData();
+    const deliveryFee = deliveryData.deliveryFee;
+
+    // Calculate Final Total
+    let totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    totalAmount += deliveryFee;
+
+    // Prepare Order Summary
+    const orderSummary = {
+        items: cart,
+        totalAmount,
+        deliveryOption: deliveryData.deliveryOption,
+        deliveryFee,
+        location: deliveryData.location
+    };
+
+    // Save to LocalStorage for Review
+    localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
+
     alert('Proceeding to checkout...');
-    localStorage.removeItem('cart');
-    window.location.href = 'index.html';
+    window.location.href = 'checkout.html';
 }
+

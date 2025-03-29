@@ -16,20 +16,19 @@
             <h1 class="store-title">Kina Dadi Store</h1>
             <div class="header-top">
 
-                <!-- Cart Icon -->
+    
                 <a href="index.html" class="cart-icon">
-                    <img src="images/cart.ico" alt="Cart">
+                    <img src="images/cart.png" alt="Cart">
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
 
-                <!-- Search Bar -->
                 <div class="search-bar">
                     <input type="text" id="searchInput" placeholder="Search for products...">
                 </div>
 
                 <!-- Profile Icon -->
                 <a href="profile.html" class="profile-icon">
-                    <img src="images/profile-icon.jpg" alt="Profile">
+                    <img src="images/profile.png" alt="Profile">
                 </a>
             </div>
         </div>
@@ -38,6 +37,10 @@
     <!-- Cart Section -->
     <section class="cart-section">
         <div class="container">
+            
+            <div class="back-btn-container">
+                <a href="index.html" class="back-btn">← Back to Shop</a>
+            </div>
             <h2>Your Cart</h2>
 
             <!-- Cart Items Container -->
@@ -52,6 +55,28 @@
             <!-- Cart Summary Section -->
             <div id="cartSummary" class="cart-summary" style="display: none;">
                 <h3>Total: <span id="cartTotal">$0.00</span></h3>
+                <!-- Delivery Options Section -->
+<div class="delivery-options">
+    <h3>Select Delivery Option</h3>
+    <label>
+        <input type="radio" name="deliveryOption" value="delivery" checked onclick="toggleLocation(true)" />
+        Home Delivery
+    </label>
+    <label>
+        <input type="radio" name="deliveryOption" value="pickup" onclick="toggleLocation(false)" />
+        Pickup at Store
+    </label>
+
+    <!-- Location Input for Delivery -->
+    <div id="locationSection" style="display: block; margin-top: 10px;">
+        <label for="location">Enter your location:</label>
+        <input type="text" id="location" placeholder="Enter your address" />
+    </div>
+
+    <!-- Delivery Fee Display -->
+    <p id="deliveryFee">Delivery Fee: ₱0.00</p>
+</div>
+
                 <button class="btn checkout-btn" onclick="checkout()">Proceed to Checkout</button>
                 <button class="btn clear-btn" onclick="clearCart()">Clear Cart</button>
             </div>

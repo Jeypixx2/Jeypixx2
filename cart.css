@@ -1,86 +1,89 @@
-
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #F5E6D3;
+    background-color: #F5E6D3; /* Light Beige */
+    margin: 0;
     padding: 0;
-    color: #8B3E25;
+    color: #8B3E25; /* Dark Brown */
 }
 
 /* Ensure body and html cover full width */
 html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
 }
 
-/* Update header to cover entire width */
+/* Header Section */
 .header {
     background-color: #A23E2B;
-    width: 100vw; /* Force full width */
+    width: 100%;
     padding: 20px 0;
     text-align: center;
-    margin: 0;
     box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
-/* Fix container width */
-.container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 20px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
 
 /* Store Title */
 .store-title {
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: bold;
     color: #F5E6D3; /* Light Beige */
     margin: 0;
 }
 
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-/* Header Top: Aligned and Full Width */
+/* Header Top Section */
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 10px auto 0;
-    padding: 0 20px;
-    box-sizing: border-box;
 }
 
-/* Search Bar: Centered */
+/* Search Bar */
 .search-bar {
     flex: 1;
     display: flex;
     justify-content: center;
 }
 
-/* Search Bar Input */
 .search-bar input {
     padding: 12px;
     width: 100%;
     max-width: 600px;
-    border: 1px solid #8B3E25; /* Dark Brown */
-    border-radius: 10px;
+    border: 1px solid #8B3E25;
+    border-radius: 20px;
     font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+    border-color: #A23E2B;
+    box-shadow: 0 0 10px rgba(162, 62, 43, 0.3);
 }
 
 /* Cart Icon */
 .cart-icon {
-    position: absolute;
-    left: 0;
+    position: relative;
     margin-left: 10px;
     text-decoration: none;
-    position: relative;
+    transition: transform 0.3s;
 }
 
-/* Cart Icon Image */
+.cart-icon:hover {
+    transform: scale(1.1);
+}
+
 .cart-icon img {
     width: 40px;
     height: 40px;
@@ -92,7 +95,7 @@ html, body {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: #E84C3D; /* Red */
+    background-color: #E84C3D;
     color: #FFF;
     font-size: 12px;
     padding: 2px 6px;
@@ -102,33 +105,19 @@ html, body {
 /* Profile Icon */
 .profile-icon {
     margin-right: 10px;
+    transition: transform 0.3s;
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
 }
 
 .profile-icon img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #E8B557; /* Gold */
+    border: 2px solid #E8B557;
 }
-
-/* Responsive Design for Header */
-@media (max-width: 768px) {
-    .header-top {
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .search-bar input {
-        width: 100%;
-    }
-
-    .cart-icon,
-    .profile-icon {
-        margin-top: 10px;
-    }
-}
-
 
 /* Cart Section */
 .cart-section {
@@ -148,13 +137,19 @@ html, body {
 /* Individual Cart Item */
 .cart-item {
     background-color: #FFF;
-    border: 1px solid #E8B557; /* Gold */
-    border-radius: 10px;
+    border: 1px solid #E8B557;
+    border-radius: 15px;
     padding: 20px;
     width: 300px;
     text-align: left;
     position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cart-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 /* Cart Item Content */
@@ -169,6 +164,8 @@ html, body {
 .cart-item h4 {
     margin: 0;
     color: #8B3E25;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .cart-item p {
@@ -178,7 +175,7 @@ html, body {
 
 /* Remove Button */
 .remove-btn {
-    background-color: #E84C3D; /* Red */
+    background-color: #E84C3D;
     color: #FFF;
     border: none;
     padding: 8px 12px;
@@ -187,10 +184,12 @@ html, body {
     position: absolute;
     top: 10px;
     right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .remove-btn:hover {
-    background-color: #A23E2B; /* Burgundy/Red */
+    background-color: #A23E2B;
+    transform: scale(1.1);
 }
 
 /* Empty Cart Message */
@@ -202,25 +201,196 @@ html, body {
 /* Cart Summary */
 .cart-summary {
     margin-top: 30px;
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #E8B557;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Cart Summary Heading */
 .cart-summary h3 {
     color: #A23E2B;
+    margin-bottom: 15px;
 }
 
 /* Checkout Button */
-.checkout-btn {
-    background-color: #E8B557; /* Gold */
+.checkout-btn,
+.clear-btn {
+    background-color: #E8B557;
     color: #8B3E25;
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 12px 25px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     margin-top: 10px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.checkout-btn:hover {
+.checkout-btn:hover,
+.clear-btn:hover {
     background-color: #A23E2B;
     color: #F5E6D3;
+    transform: translateY(-3px);
+}
+
+/* Delivery Options */
+.delivery-options {
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Delivery Options Heading */
+.delivery-options h3 {
+    color: #A23E2B;
+}
+
+/* Delivery Radio Options */
+.delivery-options label {
+    display: block;
+    margin-top: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.delivery-options input[type="radio"] {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Location Section */
+#locationSection {
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#location {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E8B557;
+    border-radius: 8px;
+    margin-top: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#location:focus {
+    border-color: #A23E2B;
+}
+
+/* Delivery Fee Display */
+#deliveryFee {
+    margin-top: 10px;
+    color: #8B3E25;
+    font-size: 14px;
+}
+
+/* Empty Cart Button */
+.btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+    transform: translateY(-3px);
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .cart-icon,
+    .profile-icon {
+        margin-top: 10px;
+    }
+
+    .cart-item {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .cart-summary {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .checkout-btn,
+    .clear-btn {
+        width: 100%;
+    }
+}
+/* Back Button */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #E8B557; /* Gold */
+    color: #8B3E25; /* Dark Brown */
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    position: relative;
+    text-align: left;
+    margin-left: 0;
+}
+
+/* Align Back Button to Left */
+.back-btn-container {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Hover Effect */
+.back-btn:hover {
+    background-color: #A23E2B; /* Burgundy/Red */
+    color: #F5E6D3;
+    transform: translateY(-3px);
+}
+
+/* Back Button Responsive */
+@media (max-width: 768px) {
+    .back-btn {
+        width: auto;
+        text-align: left;
+        margin-left: 0;
+    }
+
+    .back-btn-container {
+        text-align: left;
+        margin-bottom: 15px;
+    }
 }

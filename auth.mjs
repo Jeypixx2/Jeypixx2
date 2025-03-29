@@ -4,10 +4,12 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut,
+    setPersistence,
+    browserLocalPersistence,
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 import { ref, set, get } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-// Show loading indicator (optional: add a <div id="loading">Loading...</div> in your HTML)
+// ✅ Show/Hide Loading
 function showLoading(show) {
     const loadingElement = document.getElementById('loading');
     if (loadingElement) {
@@ -30,7 +32,7 @@ function showNotification(message, type = "success") {
     }
 }
 
-let isRegistering = false; // Add this flag to track registration
+let isRegistering = false; // Flag to prevent unnecessary redirects during registration
 
 // ✅ Register Form Submission
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
@@ -42,7 +44,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
     const password = document.getElementById('password').value;
     const location = document.getElementById('location').value;
     const number = document.getElementById('number').value;
-    const userType = document.getElementById('userType').value; // ✅ Get selected user type
+    const userType = document.getElementById('userType').value;
 
     // ✅ Check if userType is valid
     if (!userType) {
@@ -51,68 +53,27 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
     }
 
     try {
+        isRegistering = true; // Prevent unnecessary redirects during registration
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
         const userData = userType === "admin"
-            ? {
-                  name: name,
-                  email: email,
-              }
-            : {
-                  name: name,
-                  email: email,
-                  location: location,
-                  number: number,
-                  joined: new Date().toLocaleDateString(),
-              };
+            ? { name: name, email: email, userType: "admin" }
+            : { name: name, email: email, location: location, number: number, joined: new Date().toLocaleDateString(), userType: "user" };
 
         // ✅ Save data to the correct node
         const userNode = userType === "admin" ? "admins/" : "users/";
-
         await set(ref(database, userNode + user.uid), userData);
 
         showNotification('Account created successfully!', 'success');
         setTimeout(() => {
-            // ✅ Redirect admin to admin.html and user to profile.html
-            const redirectPage = userType === "admin" ? "admin.html" : "profile.html";
+            const redirectPage = userType === "admin" ? "admin.html" : "index.html";
             window.location.href = redirectPage;
         }, 1500);
     } catch (error) {
         showNotification(error.message, 'error');
-    }
-});
-
-// ✅ Check Auth State and Handle Redirects
-onAuthStateChanged(auth, async (user) => {
-    const currentPage = window.location.pathname.split("/").pop();
-
-    // ✅ Prevent redirection during registration
-    if (isRegistering) {
-        return;
-    }
-
-    if (!user && currentPage !== "login.html" && currentPage !== "registration.html") {
-        window.location.href = "login.html";
-        return;
-    }
-
-    if (user) {
-        // ✅ Check if the logged-in user is admin or regular user
-        const adminRef = ref(database, 'admins/' + user.uid);
-        const adminSnapshot = await get(adminRef);
-
-        // ✅ Redirect to the correct page
-        if (currentPage === "login.html" || currentPage === "register.html") {
-            const redirectPage = adminSnapshot.exists() ? "admin.html" : "profile.html";
-            window.location.href = redirectPage;
-        }
-    }
-
-    if (user) {
-        console.log("User logged in:", user.uid);
-    } else {
-        console.log("No user logged in.");
+    } finally {
+        isRegistering = false; // Reset flag after registration
     }
 });
 
@@ -123,28 +84,57 @@ document.getElementById('loginForm')?.addEventListener('submit', async function 
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const userType = document.getElementById('userType').value; // Get user type from dropdown
 
     try {
+        // ✅ Set persistence to local (remembers login across page reloads)
+        await setPersistence(auth, browserLocalPersistence);
+
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // ✅ Check if the logged-in user is admin or regular user
-        const adminRef = ref(database, 'admins/' + user.uid);
-        const adminSnapshot = await get(adminRef);
-
-        const redirectPage = adminSnapshot.exists() ? "admin.html" : "profile.html";
-
-        showNotification('Login successful! Redirecting...', 'success');
-        setTimeout(() => {
-            window.location.href = redirectPage;
-        }, 1500);
-
+        // ✅ Check if userType matches and redirect accordingly
+        const userTypeInDB = await getUserType(user.uid);
+        if (userTypeInDB === userType) {
+            const redirectPage = userType === "admin" ? "admin.html" : "index.html";
+            showNotification('Login successful! Redirecting...', 'success');
+            setTimeout(() => {
+                window.location.href = redirectPage;
+            }, 1500);
+        } else {
+            showNotification("Unauthorized access or incorrect user type.", "error");
+            await signOut(auth); // Logout user if userType mismatch
+        }
     } catch (error) {
         showNotification('Login failed: ' + error.message, 'error');
     } finally {
         showLoading(false);
     }
 });
+
+// ✅ Check User Type from Database with Corrected Logic
+async function getUserType(uid) {
+    try {
+        const adminRef = ref(database, 'admins/' + uid);
+        const userRef = ref(database, 'users/' + uid);
+
+        const adminSnapshot = await get(adminRef);
+        if (adminSnapshot.exists()) {
+            return "admin";
+        }
+
+        const userSnapshot = await get(userRef);
+        if (userSnapshot.exists()) {
+            return "user";
+        }
+
+        return null; // No matching record found
+    } catch (error) {
+        console.error("Error fetching user type:", error.message);
+        return null;
+    }
+}
+
 
 // ✅ Log Out Function
 document.getElementById('logoutButton')?.addEventListener('click', function () {
@@ -159,3 +149,33 @@ document.getElementById('logoutButton')?.addEventListener('click', function () {
             showNotification('Logout failed: ' + error.message, 'error');
         });
 });
+
+// ✅ Load Profile Data on Profile Page
+async function loadProfile() {
+    const user = auth.currentUser;
+
+    if (user) {
+        const userRef = ref(database, 'users/' + user.uid);
+        const snapshot = await get(userRef);
+
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            console.log("Loaded profile data:", data);
+
+            document.getElementById("profileName").innerText = data.name || "N/A";
+            document.getElementById("profileEmail").innerText = data.email || "N/A";
+            document.getElementById("profileJoined").innerText = "Joined: " + (data.joined || "N/A");
+            document.getElementById("profileLocation").innerText = "Location: " + (data.location || "N/A");
+            document.getElementById("profilePhone").innerText = "Phone: " + (data.number || "N/A");
+        } else {
+            console.log("No profile data found.");
+        }
+    } else {
+        console.log("User not authenticated.");
+    }
+}
+
+// ✅ Call loadProfile() when profile.html is loaded
+if (window.location.pathname.includes("profile.html")) {
+    loadProfile();
+}

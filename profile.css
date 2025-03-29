@@ -21,6 +21,7 @@ body {
     text-decoration: underline;
 }
 
+/* Profile Section */
 .profile-section {
     display: flex;
     justify-content: center;
@@ -28,6 +29,7 @@ body {
     margin-top: 40px;
 }
 
+/* Profile Card */
 .profile-card {
     background-color: #fff;
     padding: 40px;
@@ -37,6 +39,7 @@ body {
     width: 450px;
 }
 
+/* Profile Image Container */
 .profile-img-container {
     display: flex;
     flex-direction: column;
@@ -44,6 +47,7 @@ body {
     margin-bottom: 15px;
 }
 
+/* Profile Picture */
 .profile-img {
     width: 140px;
     height: 140px;
@@ -62,6 +66,7 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .change-btn:hover {
@@ -69,6 +74,7 @@ body {
     color: #F5E6D3;
 }
 
+/* Profile Info */
 .profile-info h2 {
     color: #8B3E25;
     margin-top: 10px;
@@ -89,6 +95,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
+    transition: background-color 0.3s;
 }
 
 .edit-btn:hover {
@@ -107,6 +114,7 @@ body {
     box-sizing: border-box;
 }
 
+/* Save Button */
 .save-btn {
     background-color: #E8B557;
     color: #8B3E25;
@@ -115,6 +123,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     margin-top: 5px;
+    transition: background-color 0.3s;
 }
 
 .save-btn:hover {
@@ -135,15 +144,16 @@ body {
 .purchase-section h2,
 .cart-section h2 {
     color: #A23E2B;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 22px;
 }
 
 /* Grid for Purchased and Cart Items */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-    max-width: 800px;
+    gap: 15px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -156,13 +166,13 @@ body {
 .product-card {
     background-color: #FFF;
     border: 1px solid #E8B557;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 15px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    transition: transform 0.3s, border-color 0.3s;
     width: 100%;
-    max-width: 200px;
+    max-width: 220px;
     margin: 0 auto;
 }
 
@@ -214,6 +224,7 @@ body {
         font-size: 14px;
     }
 }
+
 /* Notification Styles */
 .notification {
     position: fixed;
@@ -226,11 +237,13 @@ body {
     display: none;
 }
 
+/* Success Notification */
 .notification.success {
     background-color: #4CAF50;
     color: white;
 }
 
+/* Error Notification */
 .notification.error {
     background-color: #F44336;
     color: white;
@@ -246,6 +259,7 @@ body {
     cursor: pointer;
     margin-top: 10px;
     width: 100%;
+    transition: background-color 0.3s;
 }
 
 .logout-btn:hover {
@@ -257,4 +271,29 @@ body {
 .logout-section {
     margin-top: 10px;
     text-align: center;
+}
+
+/* Cart/Item List in Purchase History */
+.purchase-section ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.purchase-section ul li {
+    background-color: #F5E6D3;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #E8B557;
+    margin-bottom: 5px;
+}
+
+/* Loading Spinner */
+#loading {
+    display: none;
+    text-align: center;
+    font-size: 16px;
+    color: #A23E2B;
+    margin-top: 10px;
 }

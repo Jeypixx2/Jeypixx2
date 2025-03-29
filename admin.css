@@ -10,42 +10,129 @@ body {
 /* Container */
 .container {
     width: 90%;
+    max-width: 800px;
     margin: 40px auto;
     background-color: #FFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading */
-h2, h3 {
-    color: #A23E2B;
+/* Header with Burger */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #A23E2B; /* Dark Red */
+    border-radius: 12px 12px 0 0;
+    color: #F5E6D3;
 }
 
-/* Form */
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* Burger Menu Icon */
+.burger-menu {
+    cursor: pointer;
+    font-size: 24px;
+    color: #F5E6D3;
+}
+
+/* Sidebar Menu */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0; /* Moved to the right */
+    background-color: #8B3E25;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.sidebar a {
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #F5E6D3;
+    display: block;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #A23E2B;
+    color: #FFF;
+}
+
+/* Close Button */
+.sidebar .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 30px;
+    color: #F5E6D3;
+    cursor: pointer;
+}
+
+/* Form and Input Styles */
 form {
     margin-top: 20px;
+    background-color: #FCF8E8;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Input Fields */
 input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border: 1px solid #8B3E25;
     border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s;
 }
 
-/* Buttons */
+input:focus {
+    border-color: #A23E2B;
+    box-shadow: 0 0 8px rgba(162, 62, 43, 0.2);
+}
+
+/* Button Styles */
 button {
     background-color: #E8B557;
     color: #8B3E25;
     padding: 12px 20px;
     border: none;
     border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+    transform: translateY(-2px);
+}
+
+/* Logout Button */
+#logoutButton {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #E84C3D;
+    color: #FFF;
+}
+
+#logoutButton:hover {
     background-color: #A23E2B;
     color: #F5E6D3;
 }
@@ -53,32 +140,30 @@ button:hover {
 /* Product & Order Cards */
 .product-card,
 .order-card {
+    background-color: #FDF8F2;
     border: 1px solid #E8B557;
-    padding: 10px;
+    padding: 15px;
     margin: 10px 0;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.product-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-}
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
 
-/* Notification */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    display: none;
-    z-index: 1000;
-}
+    input,
+    button {
+        width: 100%;
+    }
 
-/* Error Notification */
-.notification.error {
-    background-color: #F44336;
+    .product-card img {
+        width: 60px;
+        height: 60px;
+    }
 }

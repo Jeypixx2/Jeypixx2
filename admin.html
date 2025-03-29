@@ -10,10 +10,26 @@
 
 <body>
 
-    <div class="container">
-        <h2>Welcome, Admin!</h2>
-        <p id="adminName">Hello, Admin</p>
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeMenu()">&times;</a>
+        <a href="#">📊 Reports</a>
+        <a href="#">📦 Manage Products</a>
+        <a href="#">📑 Orders</a>
+        <a href="#">⚙️ Settings</a>
+    </div>
 
+    <!-- Header with Burger Menu -->
+    <div class="header">
+        <h2>Welcome, Admin!</h2>
+        <span class="burger-menu" onclick="openMenu()">&#9776;</span>
+    </div>
+
+    <div class="container">
+        <!-- Admin Greeting -->
+        <p id="adminName">Hello, Jp Elevado</p>
+
+        <!-- Add Product Form -->
         <h3>Add a New Product</h3>
         <form id="productForm">
             <input type="text" id="productName" placeholder="Product Name" required>
@@ -22,18 +38,35 @@
             <button type="submit">Add Product</button>
         </form>
 
+        <!-- Product List Section -->
         <h3>Product List</h3>
-        <div id="productList"></div>
+        <div id="productList">
+            <!-- Product Cards will be dynamically added here -->
+        </div>
 
+        <!-- Orders List Section -->
         <h3>Orders List</h3>
-        <div id="ordersList"></div>
+        <div id="ordersList">
+            <!-- Order Cards will be dynamically added here -->
+        </div>
 
+    
         <button id="logoutButton">Logout</button>
     </div>
 
-    <div id="notification" class="notification"></div>
+    
+    <script>
+        function openMenu() {
+            document.getElementById("sidebar").style.width = "250px";
+        }
+
+        function closeMenu() {
+            document.getElementById("sidebar").style.width = "0";
+        }
+    </script>
+    <script src="admin.js"></script>
     <script type="module" src="firebase-config.mjs"></script>
-    <script type="module" src="admin.js"></script>
+    <script type="module" src="auth.mjs"></script>
 </body>
 
 </html>

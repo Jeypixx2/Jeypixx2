@@ -1,0 +1,111 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5E6D3;
+    color: #8B3E25;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    background-color: #A23E2B;
+    padding: 20px;
+    text-align: center;
+    color: #F5E6D3;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Store Title */
+.store-title {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.back-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Checkout Section */
+.checkout-section h2 {
+    color: #A23E2B;
+    text-align: center;
+}
+
+.order-summary {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #F9EBD9;
+    border-radius: 10px;
+    line-height: 1.6;
+}
+
+/* Checkout Form */
+#checkoutForm {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#checkoutForm input {
+    padding: 12px;
+    border: 1px solid #E8B557;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Confirm Button */
+.confirm-btn {
+    background-color: #E8B557;
+    color: #8B3E25;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.confirm-btn:hover {
+    background-color: #A23E2B;
+    color: #F5E6D3;
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    background-color: #D4EDDA;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.success-message h2 {
+    color: #155724;
+}
+
+.success-message p {
+    color: #155724;
+}
