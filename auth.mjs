@@ -114,6 +114,8 @@ document.getElementById('loginForm')?.addEventListener('submit', async function 
 });
 
 
+
+
 async function getUserType(uid) {
     try {
         const adminRef = ref(database, 'admins/' + uid);

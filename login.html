@@ -17,12 +17,12 @@
         <form id="loginForm">
          
             <select id="userType" required>
-                <option value="user">User</option>
+                <option value="user" selected>User</option>
                 <option value="admin">Admin</option>
             </select>
 
-            <input type="email" id="email" placeholder="Enter Email" required />
-            <input type="password" id="password" placeholder="Enter Password" required />
+            <input type="email" id="email" placeholder="Enter Email" value="test@gmail.com" required />
+            <input type="password" id="password" placeholder="Enter Password" value="Password" required />
             <button type="submit">Login</button>
             <div class="small-text">
                 Don't have an account? <a href="registration.html">Create one</a>
@@ -31,48 +31,7 @@
         <div id="loading">Loading...</div>
     </div>
     
-    <script type="module">
-        import { auth, database } from "./firebase-config.mjs";
-        import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-        import { ref, get } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
-
-        
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const userType = document.getElementById("userType").value;
-
-            try {
-            
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                const userRef = ref(database, "users/" + user.uid);
-                const snapshot = await get(userRef);
-
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-
-           
-                    if (data.type === userType) {
-                        if (userType === "admin") {
-                            window.location.href = "admin-dashboard.html"; 
-                        } else {
-                            window.location.href = "index.html"; 
-                        }
-                    } else {
-                        alert("Unauthorized access!");
-                    }
-                } else {
-                    alert("User type not found!");
-                }
-            } catch (error) {
-                alert("Login failed! " + error.message);
-            }
-        });
-    </script>
+    
     <div id="notification" class="notification"></div>
 
     <script type="module" src="firebase-config.mjs"></script>
