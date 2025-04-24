@@ -47,7 +47,7 @@ body {
     color: #F5E6D3;
 }
 
-/* Checkout Section */
+
 .checkout-section h2 {
     color: #A23E2B;
     text-align: center;
@@ -61,7 +61,6 @@ body {
     line-height: 1.6;
 }
 
-/* Checkout Form */
 #checkoutForm {
     margin-top: 20px;
     display: flex;
@@ -76,7 +75,7 @@ body {
     font-size: 16px;
 }
 
-/* Confirm Button */
+
 .confirm-btn {
     background-color: #E8B557;
     color: #8B3E25;
@@ -93,7 +92,7 @@ body {
     color: #F5E6D3;
 }
 
-/* Success Message */
+
 .success-message {
     text-align: center;
     background-color: #D4EDDA;

@@ -12,7 +12,7 @@ import {
     set,
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-// ✅ Check Admin Auth
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const userRef = ref(database, 'admins/' + user.uid);
@@ -30,7 +30,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// ✅ Add New Product
+
 document.getElementById('productForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 

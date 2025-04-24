@@ -1,10 +1,10 @@
-// Load Cart Items on Page Load
+
 document.addEventListener('DOMContentLoaded', () => {
     loadCartItems();
     updateCartCount();
 });
 
-// Load and Display Cart Items
+
 function loadCartItems() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
@@ -39,7 +39,7 @@ function loadCartItems() {
     }
 }
 
-// Update Cart Total
+
 function updateCartTotal() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let total = 0;
@@ -50,7 +50,7 @@ function updateCartTotal() {
 
     document.getElementById('cartTotal').innerText = `$${total.toFixed(2)}`;
 }
-// Delivery Fee Settings
+
 const deliveryRates = {
     'Naga City': 30,
     'Pili': 50,
@@ -58,14 +58,14 @@ const deliveryRates = {
     'Others': 100
 };
 
-// ✅ Toggle Location Field for Pickup/Delivery
+
 function toggleLocation(show) {
     const locationSection = document.getElementById('locationSection');
     locationSection.style.display = show ? 'block' : 'none';
-    updateDeliveryFee(); // Update fee when switching
+    updateDeliveryFee(); 
 }
 
-// ✅ Calculate Delivery Fee Based on Location
+
 function updateDeliveryFee() {
     const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
     const location = document.getElementById('location').value.trim();
@@ -82,15 +82,15 @@ function updateDeliveryFee() {
     return deliveryFee;
 }
 
-// ✅ Listen for Changes in Delivery Option
+
 document.querySelectorAll('input[name="deliveryOption"]').forEach(option => {
     option.addEventListener('change', updateDeliveryFee);
 });
 
-// ✅ Calculate Fee When Typing Location
+
 document.getElementById('location').addEventListener('input', updateDeliveryFee);
 
-// ✅ Get Delivery Data to Include in Order
+
 function getDeliveryData() {
     const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
     const location = deliveryOption === 'delivery' ? document.getElementById('location').value : 'Store Pickup';
@@ -117,7 +117,6 @@ function updateQuantity(index, quantity) {
     }
 }
 
-// Remove Item from Cart
 function removeFromCart(index) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.splice(index, 1);
@@ -126,14 +125,14 @@ function removeFromCart(index) {
     updateCartCount();
 }
 
-// Update Cart Count Icon
+
 function updateCartCount() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
     document.getElementById('cartCount').innerText = totalItems;
 }
 
-// Clear All Items from Cart
+
 function clearCart() {
     localStorage.removeItem('cart');
     loadCartItems();
@@ -141,7 +140,7 @@ function clearCart() {
     alert('Cart has been cleared!');
 }
 
-// Proceed to Checkout
+
 function checkout() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     if (cart.length === 0) {
@@ -149,15 +148,13 @@ function checkout() {
         return;
     }
 
-    // Get Delivery Data
+
     const deliveryData = getDeliveryData();
     const deliveryFee = deliveryData.deliveryFee;
 
-    // Calculate Final Total
     let totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     totalAmount += deliveryFee;
 
-    // Prepare Order Summary
     const orderSummary = {
         items: cart,
         totalAmount,
@@ -166,7 +163,7 @@ function checkout() {
         location: deliveryData.location
     };
 
-    // Save to LocalStorage for Review
+   
     localStorage.setItem('orderSummary', JSON.stringify(orderSummary));
 
     alert('Proceeding to checkout...');

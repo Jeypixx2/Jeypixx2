@@ -1,9 +1,10 @@
-// ✅ Import Firebase modules
 import { auth, database } from "./firebase-config.mjs";
 import {
     onAuthStateChanged,
     signOut,
     updateEmail,
+    reauthenticateWithCredential, 
+    EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 import {
     ref,
@@ -11,46 +12,45 @@ import {
     update,
 } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-// ✅ Global functions to enable button actions
+
 window.changeProfilePicture = changeProfilePicture;
 window.toggleEdit = toggleEdit;
 window.logoutUser = logoutUser;
+window.saveProfile = saveProfile;
 
-// ✅ Check if user is logged in and load profile data
+
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const userId = user.uid;
         console.log("✅ User authenticated with UID:", userId);
 
-        // ✅ Load Profile and Purchase History
+       
         loadProfileFromFirebase(userId);
-        loadProfile(); // Load profile picture
-        loadPurchaseHistory(userId); // Load purchase history
+        loadProfile(); 
+        loadPurchaseHistory(userId); 
     } else {
-        window.location.href = "login.html"; // Redirect to login if not authenticated
+        window.location.href = "login.html";
     }
 });
 
-// ✅ Load user profile from Firebase
-function loadProfileFromFirebase(userId) {
-    showLoading(true); // Show loading spinner
 
+function loadProfileFromFirebase(userId) {
+    showLoading(true); 
     const userRef = ref(database, "users/" + userId);
     get(userRef)
         .then((snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-
                 console.log("✅ Loaded profile data:", data);
 
-                // ✅ Display profile info
                 document.getElementById("profileName").innerText = data.name || "Unknown";
                 document.getElementById("profileEmail").innerText = data.email || "Unknown";
                 document.getElementById("profileDate").innerText = `Joined: ${data.joined || "N/A"}`;
                 document.getElementById("profileLocation").innerText = `Location: ${data.location || "Not set"}`;
                 document.getElementById("profilePhone").innerText = `Phone: ${data.number || "Not provided"}`;
 
-                // ✅ Set values in the edit form
+            
                 document.getElementById("nameInput").value = data.name || "";
                 document.getElementById("emailInput").value = data.email || "";
                 document.getElementById("phoneInput").value = data.number || "";
@@ -63,11 +63,14 @@ function loadProfileFromFirebase(userId) {
             console.error("❌ Error loading profile data:", error);
         })
         .finally(() => {
-            showLoading(false); // Hide loading spinner
+            showLoading(false);
         });
 }
 
-// ✅ Load and Display Purchase History
+
+
+
+
 function loadPurchaseHistory(userId) {
     const purchaseRef = ref(database, "users/" + userId + "/purchases");
 
@@ -77,7 +80,7 @@ function loadPurchaseHistory(userId) {
                 const purchases = snapshot.val();
                 console.log("✅ Loaded purchase history:", purchases);
 
-                // ✅ Display Purchase History
+
                 displayPurchaseHistory(purchases);
             } else {
                 document.getElementById("productGrid").innerHTML =
@@ -89,15 +92,15 @@ function loadPurchaseHistory(userId) {
         });
 }
 
-// ✅ Display Purchase History in Product Grid
+
 function displayPurchaseHistory(purchases) {
     const productGrid = document.getElementById("productGrid");
-    productGrid.innerHTML = ""; // Clear previous data
+    productGrid.innerHTML = ""; 
 
     Object.keys(purchases).forEach((purchaseId) => {
         const purchase = purchases[purchaseId];
 
-        // ✅ Create a Purchase Card
+
         const purchaseCard = `
             <div class="product-card">
                 <h3>Order Date: ${purchase.orderDate}</h3>
@@ -120,49 +123,69 @@ function displayPurchaseHistory(purchases) {
             </div>
         `;
 
-        // ✅ Add to the grid
         productGrid.innerHTML += purchaseCard;
     });
 }
 
-// ✅ Save Profile Changes
+
 async function saveProfile() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.error("❌ No authenticated user found! Try again.");
+        showNotification("❌ Authentication error. Please refresh the page.", "error");
+        return;
+    }
+
+    const userId = user.uid;
+    const userRef = ref(database, "users/" + userId);
+
     const nameInput = document.getElementById("nameInput").value;
     const emailInput = document.getElementById("emailInput").value;
     const phoneInput = document.getElementById("phoneInput").value;
     const dateInput = document.getElementById("dateInput").value;
-    const user = auth.currentUser;
 
-    if (user) {
-        const userId = user.uid;
-        const userRef = ref(database, "users/" + userId);
+    try {
+        await update(userRef, {
+            name: nameInput,
+            number: phoneInput,
+            joined: dateInput,
+        });
 
-        try {
-            // ✅ Update name, phone, and joined date
-            await update(userRef, {
-                name: nameInput,
-                number: phoneInput,
-                joined: dateInput,
-            });
-            showNotification("✅ Profile updated successfully!", "success");
-
-            // ✅ Check if email is different before updating
-            if (emailInput !== user.email) {
-                await updateEmail(user, emailInput);
-                await update(userRef, { email: emailInput });
-                showNotification("✅ Email updated successfully!", "success");
-            }
-
-            // ✅ Reload profile after updating
-            loadProfileFromFirebase(userId);
-            toggleEdit();
-        } catch (error) {
-            showNotification("❌ Error updating profile: " + error.message, "error");
+        if (emailInput !== user.email) {
+            await updateUserEmail(user, emailInput);
+            await update(userRef, { email: emailInput });
         }
+
+        showNotification("✅ Profile updated successfully!", "success");
+        await loadProfileFromFirebase(userId);
+        location.reload();
+        toggleEdit();
+    } catch (error) {
+        console.error("❌ Error updating profile:", error);
+        showNotification("❌ Error updating profile: " + error.message, "error");
     }
 }
 
-// ✅ Toggle Edit Form
+
+async function updateUserEmail(user, newEmail) {
+    const password = prompt("Please enter your password to update email:");
+    if (!password) {
+        showNotification("❌ Email update canceled.", "error");
+        return;
+    }
+
+    const credential = EmailAuthProvider.credential(user.email, password);
+    try {
+        await reauthenticateWithCredential(user, credential);
+        await updateEmail(user, newEmail);
+        console.log("✅ Email updated successfully.");
+    } catch (error) {
+        console.error("❌ Email update failed:", error);
+        showNotification("❌ Email update failed: " + error.message, "error");
+    }
+}
+
+
 function toggleEdit() {
     const editForm = document.getElementById("editForm");
     const editBtn = document.getElementById("editBtn");
@@ -176,13 +199,12 @@ function toggleEdit() {
     }
 }
 
-// ✅ Load Profile Picture from Local Storage
 function loadProfile() {
     const imgSrc = localStorage.getItem("profileImg") || "images/profile-icon.jpg";
     document.getElementById("profileImg").src = imgSrc;
 }
 
-// ✅ Change Profile Picture
+
 function changeProfilePicture() {
     const imgUpload = document.getElementById("imgUpload");
     imgUpload.click();
@@ -194,19 +216,18 @@ function changeProfilePicture() {
             reader.onload = function (e) {
                 const newImgSrc = e.target.result;
                 document.getElementById("profileImg").src = newImgSrc;
-                localStorage.setItem("profileImg", newImgSrc); // ✅ Save image to localStorage
+                localStorage.setItem("profileImg", newImgSrc); 
             };
             reader.readAsDataURL(file);
         }
     };
 }
 
-// ✅ Show Loading Spinner
+
 function showLoading(show) {
     document.getElementById("loading").style.display = show ? "block" : "none";
 }
 
-// ✅ Show Notification
 function showNotification(message, type) {
     const notification = document.getElementById("notification");
     notification.innerText = message;
@@ -218,12 +239,12 @@ function showNotification(message, type) {
     }, 3000);
 }
 
-// ✅ Logout User
+
 function logoutUser() {
     signOut(auth)
         .then(() => {
             showNotification("✅ Logout successful!", "success");
-            window.location.href = "login.html"; // ✅ Redirect to login page
+            window.location.href = "login.html";
         })
         .catch((error) => {
             showNotification("❌ Logout failed: " + error.message, "error");

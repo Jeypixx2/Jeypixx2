@@ -15,7 +15,7 @@
         
         <h2>Login to Kina Dadi Store</h2>
         <form id="loginForm">
-            <!-- User Type Selection -->
+         
             <select id="userType" required>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
@@ -36,7 +36,7 @@
         import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
         import { ref, get } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-        // Handle Login
+        
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -45,23 +45,22 @@
             const userType = document.getElementById("userType").value;
 
             try {
-                // Firebase Authentication
+            
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Fetch user type from the database
                 const userRef = ref(database, "users/" + user.uid);
                 const snapshot = await get(userRef);
 
                 if (snapshot.exists()) {
                     const data = snapshot.val();
 
-                    // Check if userType matches the stored value
+           
                     if (data.type === userType) {
                         if (userType === "admin") {
-                            window.location.href = "admin-dashboard.html"; // Redirect admin
+                            window.location.href = "admin-dashboard.html"; 
                         } else {
-                            window.location.href = "index.html"; // Redirect user
+                            window.location.href = "index.html"; 
                         }
                     } else {
                         alert("Unauthorized access!");

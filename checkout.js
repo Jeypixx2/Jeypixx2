@@ -1,9 +1,8 @@
-// Import Firebase modules
 import { auth, database } from "./firebase-config.mjs";
 import { ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-// ✅ Load Order Summary and Auto-Fill Profile Data
+
 function loadOrderSummaryAndProfile() {
     const orderSummary = JSON.parse(localStorage.getItem('orderSummary'));
 
@@ -13,13 +12,13 @@ function loadOrderSummaryAndProfile() {
         return;
     }
 
-    // ✅ Display order summary in the DOM
+
     document.getElementById('orderTotal').innerText = orderSummary.totalAmount.toFixed(2);
     document.getElementById('orderDeliveryOption').innerText = orderSummary.deliveryOption;
     document.getElementById('orderLocation').innerText = orderSummary.location;
     document.getElementById('orderDeliveryFee').innerText = orderSummary.deliveryFee.toFixed(2);
 
-    // ✅ Auto-Fill User Profile Details
+
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const userRef = ref(database, "users/" + user.uid);
@@ -27,7 +26,7 @@ function loadOrderSummaryAndProfile() {
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
-                        // ✅ Use innerText for spans, not value
+                       
                         document.getElementById('fullName').innerText = data.name || "Unknown";
                         document.getElementById('email').innerText = data.email || "No email provided";
                         document.getElementById('phone').innerText = data.number || "No phone number";
@@ -45,9 +44,8 @@ function loadOrderSummaryAndProfile() {
     });
 }
 
-// ✅ Complete the Order and Save to Firebase
+
 function completeOrder() {
-    // ✅ Get user details from spans (not inputs)
     const fullName = document.getElementById('fullName').innerText.trim();
     const email = document.getElementById('email').innerText.trim();
     const phone = document.getElementById('phone').innerText.trim();
@@ -57,7 +55,7 @@ function completeOrder() {
         return;
     }
 
-    // ✅ Get order details and cart data
+    
     const orderSummary = JSON.parse(localStorage.getItem('orderSummary'));
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -67,7 +65,7 @@ function completeOrder() {
         return;
     }
 
-    // ✅ Prepare order data for Firebase
+  
     const orderData = {
         orderDate: new Date().toLocaleString(),
         totalAmount: orderSummary.totalAmount.toFixed(2),
@@ -81,22 +79,21 @@ function completeOrder() {
         })),
     };
 
-    // ✅ Save order to Firebase after checking user authentication
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const purchasesRef = ref(database, `users/${user.uid}/purchases`);
             push(purchasesRef, orderData)
                 .then(() => {
                     console.log("✅ Order saved successfully!");
-                    // ✅ Show success message and hide checkout section
+              
                     document.querySelector('.checkout-section').style.display = 'none';
                     document.getElementById('successMessage').style.display = 'block';
 
-                    // ✅ Clear cart and order summary after order is placed
+                    
                     localStorage.removeItem('cart');
                     localStorage.removeItem('orderSummary');
 
-                    // ✅ Redirect to homepage after 3 seconds
+                   
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 3000);
@@ -112,8 +109,8 @@ function completeOrder() {
     });
 }
 
-// ✅ Load order summary and profile data on page load
+
 document.addEventListener('DOMContentLoaded', loadOrderSummaryAndProfile);
 
-// ✅ Attach completeOrder function to the button
+
 document.getElementById('confirmOrderBtn').addEventListener('click', completeOrder);
