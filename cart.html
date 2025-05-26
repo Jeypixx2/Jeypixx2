@@ -10,7 +10,6 @@
 
 <body>
 
-    <!-- Header Section -->
     <header class="header">
         <div class="container">
             <h1 class="store-title">Kina Dadi Store</h1>
@@ -26,7 +25,6 @@
                     <input type="text" id="searchInput" placeholder="Search for products...">
                 </div>
 
-                <!-- Profile Icon -->
                 <a href="profile.html" class="profile-icon">
                     <img src="images/profile.png" alt="Profile">
                 </a>
@@ -34,7 +32,6 @@
         </div>
     </header>
 
-    <!-- Cart Section -->
     <section class="cart-section">
         <div class="container">
             
@@ -42,20 +39,15 @@
                 <a href="index.html" class="back-btn">← Back to Shop</a>
             </div>
             <h2>Your Cart</h2>
-
-            <!-- Cart Items Container -->
             <div id="cartItems" class="cart-items"></div>
 
-            <!-- Empty Cart Message -->
             <div id="emptyCart" class="empty-cart" style="display: none;">
                 <p>Your cart is currently empty. 😢</p>
                 <a href="index.html" class="btn">Continue Shopping</a>
             </div>
 
-            <!-- Cart Summary Section -->
             <div id="cartSummary" class="cart-summary" style="display: none;">
                 <h3>Total: <span id="cartTotal">$0.00</span></h3>
-                <!-- Delivery Options Section -->
 <div class="delivery-options">
     <h3>Select Delivery Option</h3>
     <label>
@@ -67,13 +59,11 @@
         Pickup at Store
     </label>
 
-    <!-- Location Input for Delivery -->
     <div id="locationSection" style="display: block; margin-top: 10px;">
         <label for="location">Enter your location:</label>
         <input type="text" id="location" placeholder="Enter your address" />
     </div>
 
-    <!-- Delivery Fee Display -->
     <p id="deliveryFee">Delivery Fee: ₱0.00</p>
 </div>
 
@@ -83,14 +73,12 @@
         </div>
     </section>
 
-    <!-- Firebase Module Import -->
     <script type="module">
         import { auth, database } from "./firebase-config.mjs";
         console.log("Firebase is ready!");
     </script>
 
-    <!-- Cart Logic -->
-    <script src="cart.js"></script>
+    <script type="module" src="cart.js"></script>
     <script type="module" src="auth.mjs"></script>
 
 

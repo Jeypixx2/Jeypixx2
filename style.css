@@ -325,6 +325,101 @@ h2:after {
     transform: translateY(0);
 }
 
+/* CONFIRMATION MODAL STYLES - ADDED */
+.confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Higher than notification */
+}
+
+.confirmation-modal {
+    background: #F5E6D3; /* Match your light beige background */
+    border: 3px solid #E8B557; /* Gold border to match your theme */
+    padding: 30px;
+    border-radius: 15px; /* Match your product card border radius */
+    box-shadow: 0 8px 25px rgba(139, 62, 37, 0.3); /* Brown shadow to match theme */
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.confirmation-modal h3 {
+    color: #8B3E25; /* Dark brown to match your theme */
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.confirmation-modal p {
+    color: #A23E2B; /* Medium brown to match your product prices */
+    margin-bottom: 25px;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-confirm {
+    background-color: #A23E2B; /* Match your add-to-cart button */
+    color: #F5E6D3;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px; /* Match your button border radius */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Match your button shadow */
+}
+
+.btn-confirm:hover {
+    background-color: #8B3E25; /* Match your button hover */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-cancel {
+    background-color: #E8B557; /* Gold color to match your filter buttons */
+    color: #8B3E25;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cancel:hover {
+    background-color: #D4A752; /* Slightly darker gold */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
     .header-container {
@@ -373,6 +468,22 @@ h2:after {
     .product-card img {
         height: 160px;
     }
+
+    /* Modal responsive styles */
+    .confirmation-modal {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .confirmation-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-confirm,
+    .btn-cancel {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -407,5 +518,20 @@ h2:after {
     .quantity {
         margin: 0 10px;
         font-size: 16px;
+    }
+
+    /* Small screen modal adjustments */
+    .confirmation-modal {
+        padding: 15px;
+    }
+
+    .confirmation-modal h3 {
+        font-size: 1.3rem;
+    }
+
+    .btn-confirm,
+    .btn-cancel {
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 }
